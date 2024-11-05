@@ -9,7 +9,8 @@ router = APIRouter()
 
 @router.post("/", response_model=Outage)
 def create_outage(outage: OutageCreate, db: Session = Depends(get_db)):
-    return OutageService.create_outage(db=db, outage=outage)
+    created_outage = OutageService.create_outage(db=db, outage=outage)
+    return created_outage
 
 @router.get("/", response_model=List[Outage])
 def read_outages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -28,11 +29,13 @@ def patch_outage(outage_id: int, outage: OutageCreate, db: Session = Depends(get
     db_outage = OutageService.get_outage(db, outage_id=outage_id)
     if db_outage is None:
         raise HTTPException(status_code=404, detail="Corte no encontrado")
-    return OutageService.patch_outage(db=db, outage_id=outage_id, outage=outage)
+    updated_outage = OutageService.patch_outage(db=db, outage_id=outage_id, outage=outage)
+    return updated_outage
 
 @router.delete("/{outage_id}", response_model=Outage)
 def delete_outage(outage_id: int, db: Session = Depends(get_db)):
     db_outage = OutageService.get_outage(db, outage_id=outage_id)
     if db_outage is None:
         raise HTTPException(status_code=404, detail="Corte no encontrado")
-    return OutageService.delete_outage(db=db, outage_id=outage_id)
+    deleted_outage = OutageService.delete_outage(db=db, outage_id=outage_id)
+    return deleted_outage

@@ -12,7 +12,7 @@ router = APIRouter()
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     try:
         created_user = UserService.create_user(db=db, user=user)
-        return created_user
+        return jsend_success(data=created_user)
     except Exception as e:
         return jsend_error(message=str(e))
 
@@ -20,7 +20,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     try:
         users = UserService.get_users(db, skip=skip, limit=limit)
-        return users
+        return jsend_success(data=users)
     except Exception as e:
         return jsend_error(message=str(e))
 
